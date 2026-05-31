@@ -1,64 +1,108 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Project Management System
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A role-based Laravel project management system designed for both **admins** and **normal users**.  
+The system allows users to manage their own projects, tasks, and comments, while the admin has access to all data across the platform.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Overview
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+This application provides a clean and secure environment for managing projects, tasks, and comments based on user roles.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Admins** can access and manage all projects in the system, including both admin-created and user-created projects.
+- **Normal users** can only create, update, and delete their own projects.
 
-## Learning Laravel
+The project is built using Laravel with a clean MVC architecture and follows common backend best practices.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Features
 
-## Laravel Sponsors
+### Authentication
+- User registration and login
+- Secure authentication system
+- Protected routes with middleware
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+### Admin Panel
+- Access to all projects in the system
+- View, edit, and delete any project
+- Manage all tasks and comments
+- Full control over platform data
 
-### Premium Partners
+### User Dashboard
+- Create new projects
+- Edit only own projects
+- Delete only own projects
+- Manage personal tasks and comments
+- Access restricted to own data only
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+### Project Management
+- Create projects
+- View project details
+- Edit projects based on access level
+- Delete projects based on access level
+- Pagination support
 
-## Contributing
+### Task Management
+- Create tasks
+- Update tasks
+- Delete tasks
+- Link tasks to related projects
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Comment Management
+- Add comments to tasks
+- View comments
+- Edit and delete comments based on permissions
 
-## Code of Conduct
+### Validation & Security
+- Form validation
+- CSRF protection
+- Role-based authorization
+- Access control for protected resources
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## User Roles
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Admin
+The admin can:
+- View all projects
+- Edit all projects
+- Delete all projects
+- Manage users’ projects and admin projects alike
+- Access the full system dashboard
 
-## License
+### Normal User
+A normal user can:
+- Create new projects
+- Edit only their own projects
+- Delete only their own projects
+- Manage their own tasks and comments
+- Access only their own records
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## Technologies Used
+
+- Laravel
+- PHP
+- MySQL
+- Blade
+- Eloquent ORM
+- Middleware
+- Authentication & Authorization
+
+---
+
+## Installation
+```bash
+git clone https://github.com/your-username/project-management-system.git
+cd project-management-system
+composer install
+npm install
+npm run build
+cp .env.example .env
+php artisan key:generate
+
+php artisan migrate --seed
+php artisan serve
