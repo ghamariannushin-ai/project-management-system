@@ -14,16 +14,18 @@ use App\Http\Controllers\Admin\AdminProjectController;
 use App\Http\Controllers\Admin\AdminTaskController;
 use App\Http\Controllers\Admin\AdminCommentController;
 
-// --------------------------------------------------
-// Public Routes
-// --------------------------------------------------
 
+// صفحه اصلی
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+
+// Auth Routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
+
 Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 
 Route::post('/logout', [AuthController::class, 'logout'])
@@ -31,27 +33,21 @@ Route::post('/logout', [AuthController::class, 'logout'])
     ->name('logout');
 
 
-// --------------------------------------------------
-// Authenticated User Routes
-// --------------------------------------------------
-
+// مسیرهای کاربران لاگین‌شده
 Route::middleware('auth')->group(function () {
 
-    // Projects
+    Route::get('/home', [HomeController::class, 'index'])->name('user.home');
+
     Route::resource('projects', ProjectController::class);
 
-    // Tasks
     Route::resource('tasks', TaskController::class);
 
-    // Comments
     Route::resource('comments', CommentController::class);
+
 });
 
 
-// --------------------------------------------------
-// Admin Routes
-// --------------------------------------------------
-
+// مسیرهای پنل ادمین
 Route::prefix('admin')
     ->middleware(['auth', 'admin'])
     ->name('admin.')
@@ -60,12 +56,10 @@ Route::prefix('admin')
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])
             ->name('dashboard');
 
-        // Projects
         Route::resource('projects', AdminProjectController::class);
 
-        // Tasks
         Route::resource('tasks', AdminTaskController::class);
 
-        // Comments
         Route::resource('comments', AdminCommentController::class);
+
     });

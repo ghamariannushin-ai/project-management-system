@@ -8,6 +8,18 @@
         @csrf
         @method('PUT')
 
+        {{-- اضافه کردن بخش انتخاب کاربر --}}
+        <div class="form-group mb-3">
+            <label>کاربر (مالک پروژه)</label>
+            <select name="user_id" class="form-control" required>
+                @foreach($users as $user)
+                    <option value="{{ $user->id }}" {{ $project->user_id == $user->id ? 'selected' : '' }}>
+                        {{ $user->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
         <div class="form-group mb-3">
             <label>نام پروژه</label>
             <input type="text" name="name" class="form-control" value="{{ old('name', $project->name) }}" required>

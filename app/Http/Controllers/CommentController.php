@@ -3,93 +3,59 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Models\Task; // این خط را اضافه کنید
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $comments = Comment::with('task')->get();
+        return view('comments.index', compact('comments'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        $tasks = Task::all();
+        return view('comments.create', compact('tasks'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $data = $request->validate([
-            'task_id'=>'required|exists:task,id',
+            'task_id'=>'required|exists:tasks,id',
             'content'=>'required|string',
         ]);
-        $data['user_id']=Auth::id();
+
+        $data['user_id'] = Auth::id();
         Comment::create($data);
-        return back()->with('success','کامنت ثبت شد');
+        return redirect()->route('comments.index')->with('success','کامنت ثبت شد');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function show(Comment $comment)
     {
-        //
+        return view('comments.show', compact('comment'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Comment $comment)
     {
-        abort_if($comment->user_id !== Auth::id(),403);
-        return view('comments.edit', compact('comment'));
+        abort_if($comment->user_id !== Auth::id(), 403);
+
+        $tasks = Task::all();
+        return view('comments.edit', compact('comment', 'tasks'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Comment $comment)
     {
         $data = $request->validate([
             'content'=> 'required|string',
+            'task_id'=> 'required|exists:tasks,id',
         ]);
         $comment->update($data);
-        return back()->with('success','کامنت ویرایش شد ');
+        return redirect()->route('comments.index')->with('success','کامنت ویرایش شد');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Comment $comment)
     {
         $comment->delete();

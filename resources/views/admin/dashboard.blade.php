@@ -1,41 +1,85 @@
-{{-- این view به layout اصلی ارجاع می دهد --}}
 @extends('layouts.admin')
 
-{{-- عنوان این صفحه را مشخص می کند (که در layout با @yield('title') دریافت می شود) --}}
 @section('title', 'داشبورد اصلی')
 
-{{-- محتوای اصلی این صفحه که در @yield('content') در layout قرار می گیرد --}}
 @section('content')
 
-    <div class="stats-grid">
-        <div class="stat-card">
-            <h3>کل کاربران</h3>
-            {{-- از ?? 0 برای مقدار پیشفرض در صورت نبود متغیر استفاده شده --}}
-            <p>{{ $totalUsers ?? 0 }}</p>
-        </div>
-        <div class="stat-card">
-            <h3>کل پروژه‌ها</h3>
-            <p>{{ $totalProjects ?? 0 }}</p>
-        </div>
-        {{-- می توانید کارت های بیشتری اضافه کنید --}}
+<div class="stats-grid">
+
+    <div class="stat-card">
+        <h3>کاربران</h3>
+        <p>{{ $totalUsers ?? 0 }}</p>
     </div>
 
-    <div class="latest-projects">
+    <div class="stat-card">
+        <h3>پروژه‌ها</h3>
+        <p>{{ $totalProjects ?? 0 }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>تسک‌ها</h3>
+        <p>{{ $totalTasks ?? 0 }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>کامنت‌ها</h3>
+        <p>{{ $totalComments ?? 0 }}</p>
+    </div>
+
+</div>
+
+
+<div class="dashboard-grid">
+
+    <div class="dashboard-card">
         <h3>آخرین پروژه‌ها</h3>
-        {{-- بررسی می کنیم که آیا متغیر $latestProjects تعریف شده و حداقل یک پروژه دارد --}}
-        @if(isset($latestProjects) && $latestProjects->count() > 0)
+
+        @if(isset($latestProjects) && $latestProjects->count())
             <ul>
                 @foreach($latestProjects as $project)
-                    <li>
-                        <strong>{{ $project->name ?? 'نام پروژه نامشخص' }}</strong>
-                        {{-- می توانید اطلاعات بیشتری از پروژه را نمایش دهید --}}
-                        {{-- مثال: <br> تاریخ ایجاد: {{ $project->created_at->format('Y/m/d') }} --}}
-                    </li>
+                    <li>{{ $project->name }}</li>
                 @endforeach
             </ul>
         @else
-            <p>پروژه‌ی جدیدی ثبت نشده است.</p>
+            <p>پروژه‌ای وجود ندارد</p>
         @endif
     </div>
 
-@endsection {{-- پایان سکتن content --}}
+
+    <div class="dashboard-card">
+        <h3>آخرین تسک‌ها</h3>
+
+        @if(isset($latestTasks) && $latestTasks->count())
+            <ul>
+                @foreach($latestTasks as $task)
+                    <li>{{ $task->title }}</li>
+                @endforeach
+            </ul>
+        @else
+            <p>تسکی وجود ندارد</p>
+        @endif
+    </div>
+
+
+    <div class="dashboard-card">
+        <h3>آخرین کامنت‌ها</h3>
+
+        @if(isset($latestComments) && $latestComments->count())
+            <ul>
+                @foreach($latestComments as $comment)
+                    <li>{{ Str::limit($comment->content,50) }}</li>
+                @endforeach
+            </ul>
+        @else
+            <p>کامنتی وجود ندارد</p>
+        @endif
+    </div>
+
+</div>
+
+
+<a href="{{ route('home') }}" class="user-panel-btn">
+    ورود به پنل کاربران
+</a>
+
+@endsection

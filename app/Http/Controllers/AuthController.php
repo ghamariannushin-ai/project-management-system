@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -18,32 +18,22 @@ class AuthController extends Controller
     {
         $credentials = $request->validate([
             'email' => 'required|email',
-            'password' => 'required|string',
+            'password' => 'required',
         ]);
 
-        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+        if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            if (Auth::user()->role === 'admin') {
-            return redirect()->route('admin.dashboard');
-        }
+            if (Auth::user()->is_admin) {
+                return redirect()->route('admin.dashboard');
+            }
 
             return redirect()->route('home');
         }
 
         return back()->withErrors([
-            'email' => 'اطلاعات ورود اشتباه است.',
-        ])->onlyInput('email');
-    }
-
-    public function logout(Request $request)
-    {
-        Auth::logout();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return redirect()->route('login');
+            'email' => 'اطلاعات ورود صحیح نیست',
+        ]);
     }
 
     public function showRegisterForm()
@@ -56,18 +46,28 @@ class AuthController extends Controller
         $data = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => 'required|min:6|confirmed',
         ]);
 
-        $user = User::create([
+        User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'is_admin' => false,
         ]);
 
-        Auth::login($user);
+        return redirect()->route('login')
+            ->with('success', 'ثبت‌نام با موفقیت انجام شد');
+    }
 
-        return redirect()->route('home')->with('success', 'ثبت‌نام با موفقیت انجام شد.');
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login');
     }
 }

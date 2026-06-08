@@ -12,20 +12,24 @@ class AdminTaskController extends Controller
 {
     public function index()
     {
+        // ادمین همه تسک‌ها را می‌بیند
         $tasks = Task::with(['project', 'user'])->latest()->paginate(10);
+
         return view('admin.tasks.index', compact('tasks'));
     }
 
     public function create()
     {
-        $projects = Project::all();
-        $users = User::all();
+        // برای انتخاب پروژه و کاربر
+        $projects = Project::latest()->get();
+        $users = User::latest()->get();
+
         return view('admin.tasks.create', compact('projects', 'users'));
     }
 
     public function store(Request $request)
     {
-        $data = $request->validate([
+        $validated = $request->validate([
             'project_id' => 'required|exists:projects,id',
             'user_id' => 'required|exists:users,id',
             'title' => 'required|string|max:255',
@@ -33,9 +37,17 @@ class AdminTaskController extends Controller
             'status' => 'nullable|in:pending,in_progress,completed',
         ]);
 
-        Task::create($data);
+        Task::create([
+            'project_id' => $validated['project_id'],
+            'user_id' => $validated['user_id'],
+            'title' => $validated['title'],
+            'description' => $validated['description'] ?? null,
+            'status' => $validated['status'] ?? 'pending',
+        ]);
 
-        return redirect()->route('admin.tasks.index')->with('success', 'تسک ایجاد شد.');
+        return redirect()
+            ->route('admin.tasks.index')
+            ->with('success', 'تسک با موفقیت ایجاد شد.');
     }
 
     public function show(Task $task)
@@ -45,14 +57,15 @@ class AdminTaskController extends Controller
 
     public function edit(Task $task)
     {
-        $projects = Project::all();
-        $users = User::all();
+        $projects = Project::latest()->get();
+        $users = User::latest()->get();
+
         return view('admin.tasks.edit', compact('task', 'projects', 'users'));
     }
 
     public function update(Request $request, Task $task)
     {
-        $data = $request->validate([
+        $validated = $request->validate([
             'project_id' => 'required|exists:projects,id',
             'user_id' => 'required|exists:users,id',
             'title' => 'required|string|max:255',
@@ -60,15 +73,25 @@ class AdminTaskController extends Controller
             'status' => 'nullable|in:pending,in_progress,completed',
         ]);
 
-        $task->update($data);
+        $task->update([
+            'project_id' => $validated['project_id'],
+            'user_id' => $validated['user_id'],
+            'title' => $validated['title'],
+            'description' => $validated['description'] ?? null,
+            'status' => $validated['status'] ?? 'pending',
+        ]);
 
-        return redirect()->route('admin.tasks.index')->with('success', 'تسک به‌روزرسانی شد.');
+        return redirect()
+            ->route('admin.tasks.index')
+            ->with('success', 'تسک به‌روزرسانی شد.');
     }
 
     public function destroy(Task $task)
     {
         $task->delete();
 
-        return redirect()->route('admin.tasks.index')->with('success', 'تسک حذف شد.');
+        return redirect()
+            ->route('admin.tasks.index')
+            ->with('success', 'تسک حذف شد.');
     }
 }

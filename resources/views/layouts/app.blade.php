@@ -6,8 +6,8 @@
     <title>@yield('title', 'داشبورد ادمین')</title>
 
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <style>
-        /* Basic Styling - Replace with your project's actual CSS */
+        <style>
+        /* استایل‌های قبلی شما */
         body { font-family: 'Tahoma', sans-serif; margin: 0; padding: 0; background-color: #f4f7f6; color: #333; }
         .container { max-width: 1200px; margin: 20px auto; padding: 20px; background-color: #fff; box-shadow: 0 0 10px rgba(0,0,0,0.1); border-radius: 8px; }
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
@@ -15,18 +15,23 @@
         .nav-links a { margin-left: 15px; color: #007bff; text-decoration: none; font-weight: bold; }
         .nav-links a:hover { text-decoration: underline; }
         .logout-button { background-color: #dc3545; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-size: 14px; }
-        .logout-button:hover { background-color: #c82333; }
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px; }
-        .stat-card { background-color: #e9ecef; padding: 20px; border-radius: 8px; text-align: center; }
-        .stat-card h3 { margin-top: 0; color: #495057; font-size: 1.1em; }
-        .stat-card p { font-size: 1.8em; font-weight: bold; color: #0056b3; margin-bottom: 0; }
-        .latest-projects { margin-top: 30px; }
-        .latest-projects h3 { color: #495057; border-bottom: 2px solid #007bff; padding-bottom: 10px; margin-bottom: 20px; }
-        .latest-projects ul { list-style: none; padding: 0; }
-        .latest-projects li { background-color: #f8f9fa; padding: 12px 15px; margin-bottom: 10px; border-radius: 5px; border-left: 4px solid #007bff; transition: background-color 0.2s ease; }
-        .latest-projects li:hover { background-color: #e2e6ea; }
-        .latest-projects strong { color: #0056b3; }
+
+        /* استایل‌های جدید برای جدول‌ها (برای صفحه تسک‌ها) */
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        table th, table td { padding: 12px; text-align: right; border-bottom: 1px solid #ddd; }
+        table th { background-color: #f8f9fa; }
+
+        /* استایل‌های جدید برای دکمه‌ها */
+        .btn { padding: 8px 12px; border-radius: 4px; text-decoration: none; display: inline-block; font-size: 14px; border: none; cursor: pointer; }
+        .btn-primary { background-color: #007bff; color: white; }
+        .btn-success { background-color: #28a745; color: white; }
+        .btn-warning { background-color: #ffc107; color: #000; }
+        .btn-danger { background-color: #dc3545; color: white; }
+
+        /* استایل‌های فرم */
+        form input, form select, form textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
     </style>
+
 </head>
 <body>
     <div class="container">
