@@ -106,3 +106,21 @@ php artisan key:generate
 
 php artisan migrate --seed
 php artisan serve
+
+---
+
+## Testing
+
+This project includes Feature and Unit tests using PHPUnit.
+
+Run tests with:
+
+php artisan test
+
+Current test suite includes:
+- Admin access control test
+- Admin task management tests
+- Admin comment tests
+- Project–Task relationship unit test
+- Validation tests
+
